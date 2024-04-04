@@ -1,4 +1,5 @@
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using System.Collections.Generic;
@@ -14,10 +15,15 @@ namespace MoreSpookerVideo
         internal new static ManualLogSource Logger { get; private set; } = null!;
         internal static Harmony? Harmony { get; set; }
 
+        internal static ConfigEntry<int>? CameraPrice { get; private set; }
+
         private void Awake()
         {
             Logger = base.Logger;
             Instance = this;
+
+            CameraPrice = Config.Bind("General", "CameraPrice", 50,
+            "The price of camera in shop");
 
             AddShopItem();
             Patch();
@@ -54,8 +60,8 @@ namespace MoreSpookerVideo
             if (cameraItem != null)
             {
                 cameraItem.purchasable = true;
-                cameraItem.price = 0;
-                cameraItem.quantity = 1; // defini quoi ?
+                cameraItem.price = CameraPrice.Value;
+                cameraItem.quantity = 1;
                 cameraItem.Category = ShopItemCategory.Gadgets;
 
                 Logger?.LogWarning("Add Camera in shop !");

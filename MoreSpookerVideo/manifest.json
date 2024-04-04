@@ -1,7 +1,7 @@
 {
   "name": "MoreSpookerVideo",
-  "version_number": "1.0.0",
-  "website_url": "",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/Lanthanes/More-Spooker-Video-Mod",
   "description": "A mod adding camera video in gadgets shop",
   "dependencies": [
     "bbepis-BepInExPack-5.4.2113"
