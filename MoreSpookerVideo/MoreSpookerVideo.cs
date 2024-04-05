@@ -17,13 +17,14 @@ namespace MoreSpookerVideo
 
         internal static ConfigEntry<int>? CameraPrice { get; private set; }
 
+        public static List<Item> AllItems => Resources.FindObjectsOfTypeAll<Item>().Concat(FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
+
         private void Awake()
         {
             Logger = base.Logger;
             Instance = this;
 
-            CameraPrice = Config.Bind("General", "CameraPrice", 50,
-            "The price of camera in shop");
+            CameraPrice = Config.Bind("General", "CameraPrice", 50, "The price of camera in shop");
 
             AddShopItem();
             Patch();
@@ -42,33 +43,22 @@ namespace MoreSpookerVideo
             Logger.LogDebug("Finished patching!");
         }
 
-        internal static void Unpatch()
-        {
-            Logger.LogDebug("Unpatching...");
-
-            Harmony?.UnpatchSelf();
-
-            Logger.LogDebug("Finished unpatching!");
-        }
-
         private void AddShopItem()
         {
-            List<Item> AllItems = Resources.FindObjectsOfTypeAll<Item>().Concat(FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
-
-            Item? cameraItem = AllItems.FirstOrDefault(item => item.itemType.Equals(Item.ItemType.Camera));
-
-            if (cameraItem != null)
+            Item? item = AllItems.FirstOrDefault(item => item.itemType.Equals(Item.ItemType.Camera) && item.displayName.ToLower().StartsWith("camera"));
+            
+            if (item != null)
             {
-                cameraItem.purchasable = true;
-                cameraItem.price = CameraPrice.Value;
-                cameraItem.quantity = 1;
-                cameraItem.Category = ShopItemCategory.Gadgets;
+                item.purchasable = true;
+                item.price = CameraPrice!.Value;
+                item.quantity = 1;
+                item.Category = ShopItemCategory.Gadgets;
 
-                Logger?.LogWarning("Add Camera in shop !");
+                Logger?.LogWarning($"{item.displayName} added to shop for {item.price}$ !");
                 return;
             }
 
-            Logger?.LogWarning("No Camera catched for shop...");
+            Logger?.LogWarning("No item catched for shop...");
         }
     }
 }

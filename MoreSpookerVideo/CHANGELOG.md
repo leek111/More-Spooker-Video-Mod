@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.4] - 05/04/2024
+
+### Changed
+- Update of readme
+
 ## [1.0.3] - 05/04/2024
 
 ### Changed
