@@ -24,7 +24,7 @@ namespace MoreSpookerVideo
             Logger = base.Logger;
             Instance = this;
 
-            CameraPrice = Config.Bind("General", "CameraPrice", 50, "The price of camera in shop");
+            CameraPrice = Config.Bind("General", "CameraPrice", 450, "The price of camera in shop");
 
             AddShopItem();
             Patch();
